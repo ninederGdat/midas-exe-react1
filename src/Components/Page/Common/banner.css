@@ -1,0 +1,9 @@
+.custom-banner {
+  background: linear-gradient(to right, #08111599, #16222599, #0f202799),
+    url("https://firebasestorage.googleapis.com/v0/b/midas-authen.appspot.com/o/images%2FRectangle%203.png?alt=media&token=a583ba77-7229-4ef9-b772-c3ae2bcb1e8a")
+      center;
+  background-size: cover;
+  width: 100%;
+  height: 50vh;
+  overflow: hidden;
+}

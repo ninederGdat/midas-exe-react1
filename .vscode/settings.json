@@ -1,0 +1,4 @@
+{
+  "appService.defaultWebAppToDeploy": "/subscriptions/fc796f77-4b1e-418a-bacc-3bb6fe5d244e/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/midas-exe",
+  "appService.deploySubpath": "."
+}
