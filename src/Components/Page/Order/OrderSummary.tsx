@@ -15,7 +15,7 @@ import ItemPayment from "./ItemPayment";
 function OrderSummary({ data, userInput }: OrderSummaryProps) {
   console.log(data);
 
-  const badgeTypeColor = getStatusColor(data.status!);
+  const badgeTypeColor = getStatusColor(data?.status!);
   const userData = useSelector((state: RootState) => state.userAuthStore);
   const [loading, setIsLoading] = useState(false);
 
@@ -24,7 +24,7 @@ function OrderSummary({ data, userInput }: OrderSummaryProps) {
     userid: userData.UserID,
   });
 
-  console.log(paymentData.data?.items);
+  console.log(paymentData);
 
   const [updateOrderHeader] = useUpdateOrderHeaderMutation();
   const nextStatus: any =
@@ -82,9 +82,9 @@ function OrderSummary({ data, userInput }: OrderSummaryProps) {
               </div>
             </div>
           </div> */}
-          {paymentData.isLoading && <div>Loading payment information...</div>}
-          {paymentData.error && <div>Error loading payment information</div>}
-          {paymentData.data && (
+          {paymentData?.isLoading && <div>Loading payment information...</div>}
+          {paymentData?.error && <div>Error loading payment information</div>}
+          {paymentData?.data && (
             <div className="mt-3">
               <h4 className="text-success">Payment Information</h4>
               <span className={`m-3 btn btn-outline-${badgeTypeColor} fs-6`}>

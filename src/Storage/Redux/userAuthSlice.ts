@@ -10,7 +10,7 @@ export const emtyUserState: userModel = {
   // dateOfBirth: "",
   // gender: "",
   phoneNumber: "",
-  // status: "",
+  status: "",
   email: "",
 };
 
@@ -29,7 +29,7 @@ export const userAuthSlice = createSlice({
       // state.dateOfBirth = action.payload.dateOfBirth;
       // state.gender = action.payload.gender;
       state.phoneNumber = action.payload.phoneNumber;
-      // state.status = action.payload.status;
+      state.status = action.payload.status;
     },
   },
 });

@@ -16,8 +16,10 @@ import {
   NotFound,
   OrderConfirmed,
   OrderDetails,
+  OrderSum,
   Payment,
   Register,
+  RegistStore,
   ShoppingCart,
   UserInfo,
   UserList,
@@ -55,6 +57,7 @@ function App() {
         role,
         location,
         phoneNumber,
+        status,
       }: userModel = jwt_decode(localToken);
       dispatch(
         setLoggedInUser({
@@ -64,6 +67,7 @@ function App() {
           role,
           location,
           phoneNumber,
+          status,
         })
       );
     }
@@ -104,7 +108,7 @@ function App() {
             <Route path="/accessDenied" element={<AccessDenied />}></Route>
             <Route path="/payment" element={<Payment />}></Route>
             <Route
-              path="order/orderconfirmed/:id"
+              path="order/orderconfirmed"
               element={<OrderConfirmed />}
             ></Route>
             <Route path="/order/myOrders" element={<MyOrders />}></Route>
@@ -113,6 +117,7 @@ function App() {
               path="/order/manageOrders"
               element={<ManageOrders />}
             ></Route>
+            {/* <Route path="/order/orderSum" element={<OrderSum />}></Route> */}
             <Route
               path="/order/orderDetails/:id"
               element={<OrderDetails />}
@@ -134,6 +139,10 @@ function App() {
             <Route
               path="/menuItem/menuItemShop"
               element={<MenuItemShop />}
+            ></Route>
+            <Route
+              path="/menuItem/registStore"
+              element={<RegistStore />}
             ></Route>
             <Route path="*" element={<NotFound />}></Route>
           </Routes>

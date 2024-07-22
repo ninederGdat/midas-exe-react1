@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://exemidas-api.azurewebsites.net/api/",
+    baseUrl: "https://exemidas2-api.azurewebsites.net/api/",
     prepareHeaders: (headers: Headers, api) => {
       const token = localStorage.getItem("token");
       token && headers.append("Authorization", "Bearer " + token);
@@ -34,6 +34,15 @@ const userApi = createApi({
       }),
       invalidatesTags: ["User"],
     }),
+    updateStatusUser: builder.mutation({
+      query: ({ data, id }) => ({
+        url: `user/updateStatus/${id}`,
+        method: "PUT",
+
+        body: data,
+      }),
+      invalidatesTags: ["User"],
+    }),
     // deleteMenuItem: builder.mutation({
     //   query: (id) => ({
     //     url: "user/" + id,
@@ -48,6 +57,7 @@ export const {
   useGetUsersQuery,
   useGetUsersByIdQuery,
   useUpdateInfoUserMutation,
+  useUpdateStatusUserMutation,
   // useUpdateMenuItemMutation,
 } = userApi;
 

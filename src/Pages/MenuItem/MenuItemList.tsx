@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   useDeleteMenuItemMutation,
   useGetMenuItemsQuery,
@@ -8,9 +8,12 @@ import { menuItemModel } from "../../Interfaces";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+const ITEMS_PER_PAGE = 6;
+
 function MenuItemList() {
-  const [deleteMenuItem] = useDeleteMenuItemMutation();
+  const [currentPage, setCurrentPage] = useState(1);
   const { data, isLoading } = useGetMenuItemsQuery(null);
+  const [deleteMenuItem] = useDeleteMenuItemMutation();
   const navigate = useNavigate();
 
   const handleMenuItemDelete = async (id: number) => {
@@ -19,7 +22,7 @@ function MenuItemList() {
       {
         pending: "Processing your request...",
         success: "Menu Item Deleted successfully 👌",
-        error: "Error Encounterd 🤯",
+        error: "Error Encountered 🤯",
       },
       {
         theme: "light",
@@ -27,12 +30,26 @@ function MenuItemList() {
     );
   };
 
-  console.log(data);
+  const totalPages = data ? Math.ceil(data.length / ITEMS_PER_PAGE) : 1;
+  const currentData = data
+    ? data.slice(
+        (currentPage - 1) * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
+      )
+    : [];
+
+  const handlePreviousPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  };
 
   return (
     <>
       {isLoading && <MainLoader />}
-      {!isLoading && (
+      {!isLoading && data && (
         <div className="table p-5">
           <div className="d-flex align-items-center justify-content-between">
             <h1 className="text-success">MenuItem List</h1>
@@ -51,10 +68,10 @@ function MenuItemList() {
               <div className="col-2">Category</div>
               <div className="col-1">Price</div>
               <div className="col-1">Status</div>
-              <div className="col-1">Action</div>
+              <div className="col-2">Action</div>
             </div>
 
-            {data.map((menuItem: menuItemModel) => {
+            {currentData.map((menuItem: menuItemModel) => {
               return (
                 <div className="row border" key={menuItem.productId}>
                   <div className="col-2">
@@ -69,7 +86,7 @@ function MenuItemList() {
                   <div className="col-2">{menuItem.categoryName}</div>
                   <div className="col-1">{menuItem.price}</div>
                   <div className="col-1">{menuItem.status}</div>
-                  <div className="col-1">
+                  <div className="col-2">
                     <button className="btn btn-success">
                       <i
                         className="bi bi-pencil-fill"
@@ -90,6 +107,26 @@ function MenuItemList() {
                 </div>
               );
             })}
+
+            <div className="pagination mt-3">
+              <button
+                className="btn btn-primary me-2"
+                onClick={handlePreviousPage}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
+              <span>
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                className="btn btn-primary ms-2"
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
           </div>
         </div>
       )}

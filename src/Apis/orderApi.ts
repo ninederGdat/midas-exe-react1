@@ -4,7 +4,7 @@ import { OrderDetails } from "../Pages";
 const orderApi = createApi({
   reducerPath: "orderApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://exemidas-api.azurewebsites.net/api/",
+    baseUrl: "https://exemidas2-api.azurewebsites.net/api/",
     prepareHeaders: (headers: Headers, api) => {
       const token = localStorage.getItem("token");
       token && headers.append("Authorization", "Bearer " + token);

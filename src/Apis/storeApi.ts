@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const storeApi = createApi({
   reducerPath: "storeApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://exemidas-api.azurewebsites.net/api/",
+    baseUrl: "https://exemidas2-api.azurewebsites.net/api/",
     prepareHeaders: (headers: Headers, api) => {
       const token = localStorage.getItem("token");
       token && headers.append("Authorization", "Bearer " + token);
@@ -24,6 +24,20 @@ const storeApi = createApi({
       }),
       providesTags: ["Store"],
     }),
+    getStoreById: builder.query({
+      query: (id) => ({
+        url: `Store/GetByStoreId/${id}`,
+      }),
+      providesTags: ["Store"],
+    }),
+    createStore: builder.mutation({
+      query: (data) => ({
+        url: "Store",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Store"],
+    }),
 
     // deleteMenuItem: builder.mutation({
     //   query: (id) => ({
@@ -35,6 +49,11 @@ const storeApi = createApi({
   }),
 });
 
-export const { useGetAllStoresQuery, useGetStoreByUserIdQuery } = storeApi;
+export const {
+  useGetAllStoresQuery,
+  useGetStoreByUserIdQuery,
+  useGetStoreByIdQuery,
+  useCreateStoreMutation,
+} = storeApi;
 
 export default storeApi;

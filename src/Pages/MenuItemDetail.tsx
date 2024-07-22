@@ -7,7 +7,10 @@ import { MainLoader, MiniLoader } from "../Components/Page/Common";
 import { apiResponse, cartResponse, userModel } from "../Interfaces";
 import { toastNotify } from "../Helper";
 import { RootState } from "../Storage/Redux/store";
-import { useGetStoreByUserIdQuery } from "../Apis/storeApi";
+import {
+  useGetStoreByIdQuery,
+  useGetStoreByUserIdQuery,
+} from "../Apis/storeApi";
 import Feedback from "../Components/Page/Feeback/Feedback";
 
 function MenuItemDetail() {
@@ -22,17 +25,21 @@ function MenuItemDetail() {
   );
 
   const {
-    data: shopData,
-    isLoading: isShopLoading,
-    isError: isShopError,
-  } = useGetStoreByUserIdQuery(userData.UserID);
-  const {
     data: menuItemData,
     isLoading: isMenuItemLoading,
     isError: isMenuItemError,
   } = useGetMenuItemByIdQuery(menuitemId);
 
+  const shopId = menuItemData?.store?.storeID;
+
+  const {
+    data: shopData,
+    isLoading: isShopLoading,
+    isError: isShopError,
+  } = useGetStoreByIdQuery(shopId);
+
   // console.log(menuItemData);
+  // console.log(menuItemData.store.storeID);
 
   const handleAddToCart = async (menuItemId: number) => {
     if (!userData.UserID) {

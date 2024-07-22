@@ -17,7 +17,7 @@ import cartDetailsModel from "./cartDetailsModel";
 import ItemOrders from "./ItemOrders";
 import shopInfoModel from "./shopInfoModel";
 import menuItemShopModel from "./menuItemShopModel";
-
+import OrderSummaryProps2 from "./OrderSummaryProps2";
 export type {
   menuItemModel,
   cartItemModel,
@@ -38,4 +38,5 @@ export type {
   ItemOrders,
   shopInfoModel,
   menuItemShopModel,
+  OrderSummaryProps2,
 };

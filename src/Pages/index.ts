@@ -18,6 +18,8 @@ import ManageOrders from "./Order/ManageOrders";
 import UserList from "./User/UserList";
 import UserInfo from "./User/UserInfo";
 import MenuItemShop from "./MenuItem/MenuItemShop";
+import RegistStore from "./MenuItem/RegistStore";
+import OrderSum from "./Order/OrderSum";
 export {
   Home,
   NotFound,
@@ -39,4 +41,6 @@ export {
   UserList,
   UserInfo,
   MenuItemShop,
+  RegistStore,
+  OrderSum,
 };

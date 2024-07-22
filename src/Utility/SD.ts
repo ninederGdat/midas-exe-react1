@@ -9,11 +9,11 @@ export enum SD_Gender {
 }
 
 export enum SD_Status {
-  PENDING = "Pending",
-  CONFIRMED = "Confirmed",
+  PENDING = "Chưa giao",
+  CONFIRMED = "Ðang giao",
   BEING_COOKED = "Being Cooked",
   READY_FOR_PICKUP = "Ready for Pickup",
-  COMPLETED = "Paid",
+  COMPLETED = "Giao thành công",
   CANCLED = "Cancled",
 }
 

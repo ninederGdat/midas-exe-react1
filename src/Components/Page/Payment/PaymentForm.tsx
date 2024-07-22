@@ -47,27 +47,25 @@ const PaymentForm: React.FC<OrderSummaryProps> = ({ data, userInput }) => {
       // Replace with actual account ID
     };
 
-    const response = await createOrder(orderData);
+    const response: any = await createOrder(orderData);
 
     console.log(orderData);
-
+    // console.log(response.data.orderId);
     try {
       // Assuming `data` contains the URL you need for the QR code
-      // if (data.checkoutUrl) {
-      //   // Redirect to the checkout URL
-      //   window.location.href = data.checkoutUrl;
-      // } else {
-      //   throw new Error("Checkout URL not found");
-      // }
-
-      if (response) {
-        // navigate(
-        //   `/order/orderConfirmed/${response.data?.result.orderHeaderId}`
-        // );
-        console.log("done");
+      if (data.checkoutUrl) {
+        // Redirect to the checkout URL
+        window.location.href = data.checkoutUrl;
       } else {
-        navigate("/failed");
+        throw new Error("Checkout URL not found");
       }
+
+      // if (response) {
+      //   navigate(`/order/orderConfirmed/${response.data.orderId}`);
+      //   console.log("done");
+      // } else {
+      //   navigate("/failed");
+      // }
     } catch (error) {
       toastNotify("An unexpected error occurred.", "error");
       setIsProcessing(false);
