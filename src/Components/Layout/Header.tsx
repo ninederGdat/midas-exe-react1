@@ -72,7 +72,7 @@ function Header() {
                   Home
                 </NavLink>
               </li>
-              {userData.role == SD_Roles.ADMIN ? (
+              {userData.role === SD_Roles.ADMIN ? (
                 <li className="nav-item dropdown">
                   <a
                     className="nav-link dropdown-toggle"
