@@ -2,7 +2,7 @@
 export interface OrderItem {
   productName: string;
   quantity: string;
-  price: string;
+  price: number;
 }
 
 export default interface OrderSummaryProps2 {

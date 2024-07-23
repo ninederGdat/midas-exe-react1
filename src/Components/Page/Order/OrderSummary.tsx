@@ -12,7 +12,7 @@ import { useGetPaymentInfoQuery } from "../../../Apis/paymentApi";
 import PaymentInfo from "./PaymentInfo";
 import ItemPayment from "./ItemPayment";
 
-function OrderSummary({ data, userInput }: OrderSummaryProps) {
+function OrderSummary({ data, paymentLinkId }: OrderSummaryProps) {
   console.log(data);
 
   const badgeTypeColor = getStatusColor(data?.status!);
@@ -91,7 +91,9 @@ function OrderSummary({ data, userInput }: OrderSummaryProps) {
                 {data.status}
               </span>
               <div className="border py-3 px-2">
-                <p>Amount: {paymentData.data.amount}</p>
+                <p>
+                  Amount: {paymentData.data.amount.toLocaleString("vi-VN")} VNĐ
+                </p>
                 <p>Description: {paymentData.data.description}</p>
                 <p>Buyer Name: {paymentData.data.buyerName}</p>
                 <p>Buyer Phone: {paymentData.data.buyerPhone}</p>

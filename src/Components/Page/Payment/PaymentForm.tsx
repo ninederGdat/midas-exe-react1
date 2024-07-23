@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toastNotify } from "../../../Helper";
 import { OrderSummaryProps } from "../Order/OrderSummaryProps";
-import { apiResponse, cartItemModel, userModel } from "../../../Interfaces";
-import { SD_Status } from "../../../Utility/SD";
+import { cartItemModel, userModel } from "../../../Interfaces";
 import { useCreateOrderMutation } from "../../../Apis/orderApi";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../Storage/Redux/store";
 import { useGetStoreByUserIdQuery } from "../../../Apis/storeApi";
 
-const PaymentForm: React.FC<OrderSummaryProps> = ({ data, userInput }) => {
+const PaymentForm: React.FC<OrderSummaryProps> = ({ data, paymentLinkId }) => {
   const navigate = useNavigate();
   const [createOrder] = useCreateOrderMutation(); // Destructuring the mutation function
   const [isProcessing, setIsProcessing] = useState(false);
@@ -23,9 +22,7 @@ const PaymentForm: React.FC<OrderSummaryProps> = ({ data, userInput }) => {
 
   const shopData = useGetStoreByUserIdQuery(userData.UserID);
 
-  const id = userData.UserID;
-  console.log(shoppingCartFromStore);
-  console.log(data);
+  const accountId = userData.UserID;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -37,35 +34,29 @@ const PaymentForm: React.FC<OrderSummaryProps> = ({ data, userInput }) => {
       quantity: 1, // You need to determine how quantity is managed
     }));
 
+    // Construct the ReturnUrl with paymentLinkId and accountId
+    const returnUrl = `http://localhost:3000/order/orderconfirmed/?paymentLinkId=${paymentLinkId}&accountId=${accountId}`;
+
     // Call API to create order
     const orderData = {
       paymentMethodID: 1, // Replace with actual payment method ID
       shipmentMethodID: 2, // Replace with actual shipment method ID or null
       orderDetails: orderDetails,
-      accountID: id,
+      accountID: accountId,
       storeId: shopData.data.data[0].storeId,
-      // Replace with actual account ID
+      paymentLinkId: paymentLinkId, // Include paymentLinkId in the order data
+      returnUrl: returnUrl, // Include the constructed ReturnUrl
     };
 
-    const response: any = await createOrder(orderData);
-
-    console.log(orderData);
-    // console.log(response.data.orderId);
     try {
-      // Assuming `data` contains the URL you need for the QR code
+      const response: any = await createOrder(orderData);
+
       if (data.checkoutUrl) {
         // Redirect to the checkout URL
         window.location.href = data.checkoutUrl;
       } else {
         throw new Error("Checkout URL not found");
       }
-
-      // if (response) {
-      //   navigate(`/order/orderConfirmed/${response.data.orderId}`);
-      //   console.log("done");
-      // } else {
-      //   navigate("/failed");
-      // }
     } catch (error) {
       toastNotify("An unexpected error occurred.", "error");
       setIsProcessing(false);

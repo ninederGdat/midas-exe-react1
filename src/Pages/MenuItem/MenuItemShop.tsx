@@ -55,7 +55,7 @@ function MenuItemShop() {
 
   const calculateTotalRevenue = (shop: menuItemShopModel) => {
     return shop?.product
-      .filter((item) => item.status === "Sold")
+      .filter((item) => item.status === "Unavailable")
       .reduce((total, item) => total + item.price, 0);
   };
 

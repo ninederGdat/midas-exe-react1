@@ -20,10 +20,11 @@ export interface OrderSummaryProps {
     storeName: string;
     paymentLinkId: string;
   };
-  userInput: {
-    name: string;
-    email?: string;
-    phoneNumber?: string;
-    location?: string;
-  };
+  // userInput: {
+  //   name: string;
+  //   email?: string;
+  //   phoneNumber?: string;
+  //   location?: string;
+  // };
+  paymentLinkId: string;
 }

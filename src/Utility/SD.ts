@@ -34,5 +34,5 @@ export enum SD_SortTypes {
 
 export enum SD_ItemSt {
   AVAILABLE = "Available",
-  SOLD = "Sold",
+  SOLD = "Unavailable",
 }

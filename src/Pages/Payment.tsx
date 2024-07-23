@@ -7,7 +7,7 @@ import { OrderSummary } from "../Components/Page/Order";
 
 export default function Payment() {
   const {
-    state: { apiResult, userInput },
+    state: { apiResult, paymentLinkId },
   } = useLocation();
 
   console.log(apiResult);
@@ -17,11 +17,11 @@ export default function Payment() {
     <div className="container m-5 p-5">
       <div className="row">
         <div className="col-md-7">
-          <OrderSummary data={apiResult} userInput={userInput} />
+          <OrderSummary data={apiResult} paymentLinkId={paymentLinkId} />
         </div>
         <div className="col-md-4 offset-md-1">
           <h3 className="text-success">Payment</h3>
-          <PaymentForm data={apiResult} userInput={userInput} />
+          <PaymentForm data={apiResult} paymentLinkId={paymentLinkId} />
         </div>
       </div>
     </div>

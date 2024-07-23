@@ -1,6 +1,7 @@
 import React from "react";
 import { OrderSummaryProps } from "../../Components/Page/Order/OrderSummaryProps";
-import { OrderSummaryProps2 } from "../../Interfaces";
+import { orderDetailsModel, OrderSummaryProps2 } from "../../Interfaces";
+import { OrderItem } from "../../Interfaces/OrderSummaryProps2";
 function OrderSum({ data, userInput }: OrderSummaryProps2) {
   return (
     <div className="order-summary">
@@ -13,7 +14,8 @@ function OrderSum({ data, userInput }: OrderSummaryProps2) {
           <strong>Status:</strong> {data.status}
         </p>
         <p>
-          <strong>Total Price:</strong> {data.amount}
+          <strong>Total Price:</strong>{" "}
+          {data.amount.toLocaleString("vi-VN") + " VNĐ"}
         </p>
         <p>
           <strong>Order Date:</strong> {data.createDate}
@@ -46,7 +48,7 @@ function OrderSum({ data, userInput }: OrderSummaryProps2) {
       </div>
       <h3>Order Items</h3>
       <div className="order-items">
-        {data.cartItems.map((item: any, index: number) => (
+        {data.cartItems.map((item: OrderItem, index: number) => (
           <div key={index} className="order-item">
             <p>
               <strong>Product Name:</strong> {item.productName}
@@ -55,7 +57,8 @@ function OrderSum({ data, userInput }: OrderSummaryProps2) {
               <strong>Quantity:</strong> {item.quantity}
             </p>
             <p>
-              <strong>Price:</strong> {item.price}
+              <strong>Price: </strong>{" "}
+              {item.price.toLocaleString("vi-VN") + " VNĐ"}
             </p>
           </div>
         ))}

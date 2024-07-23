@@ -55,11 +55,13 @@ function CartPickupDetails() {
     e.preventDefault();
     setLoading(true);
 
-    const { data }: apiResponse = await initatePayment(userData.UserID);
+    const { data }: any = await initatePayment(userData.UserID);
 
     console.log(data);
+    const paymentLinkId = data?.paymentLinkId;
+    console.log(paymentLinkId);
     navigate("/payment", {
-      state: { apiResult: data, userInput },
+      state: { apiResult: data, paymentLinkId },
     });
   };
 

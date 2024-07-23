@@ -107,10 +107,8 @@ function App() {
             ></Route>
             <Route path="/accessDenied" element={<AccessDenied />}></Route>
             <Route path="/payment" element={<Payment />}></Route>
-            <Route
-              path="order/orderconfirmed"
-              element={<OrderConfirmed />}
-            ></Route>
+            <Route path="/order/orderconfirmed" element={<OrderConfirmed />} />
+
             <Route path="/order/myOrders" element={<MyOrders />}></Route>
             <Route path="/order/allOrders" element={<AllOrders />}></Route>
             <Route
