@@ -1,14 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginModel, userModel } from "../../Interfaces";
+import { userModel } from "../../Interfaces";
 
 export const emtyUserState: userModel = {
-  unique_name: "",
+  fullname: "",
   role: "",
-  // username: "",
-  UserID: 0,
+  accountId: 0,
   location: "",
-  // dateOfBirth: "",
-  // gender: "",
   phoneNumber: "",
   status: "",
   email: "",
@@ -19,20 +16,19 @@ export const userAuthSlice = createSlice({
   initialState: emtyUserState,
   reducers: {
     setLoggedInUser: (state, action) => {
-      state.unique_name = action.payload.unique_name;
-      state.UserID = action.payload.UserID;
+      state.fullname = action.payload.fullname;
+      state.accountId = action.payload.accountId;
       state.email = action.payload.email;
       state.role = action.payload.role;
-      // state.username = action.payload.username;
-
       state.location = action.payload.location;
-      // state.dateOfBirth = action.payload.dateOfBirth;
-      // state.gender = action.payload.gender;
       state.phoneNumber = action.payload.phoneNumber;
       state.status = action.payload.status;
+    },
+    updateUserStatus: (state, action) => {
+      state.status = action.payload;
     },
   },
 });
 
-export const { setLoggedInUser } = userAuthSlice.actions;
+export const { setLoggedInUser, updateUserStatus } = userAuthSlice.actions;
 export const userAuthReducer = userAuthSlice.reducer;

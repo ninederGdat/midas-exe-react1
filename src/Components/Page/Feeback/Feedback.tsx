@@ -5,7 +5,7 @@ import {
   useGetAllFeedbacksQuery,
   useGetFeedbackByStoreIdQuery,
 } from "../../../Apis/feedbackApi";
-import { useGetStoreByUserIdQuery } from "../../../Apis/storeApi";
+import { useGetStoreByaccountIdQuery } from "../../../Apis/storeApi";
 import { userModel } from "../../../Interfaces";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../Storage/Redux/store";
@@ -51,7 +51,7 @@ function Feedback({ menuItemId }: FeedbackProps) {
 
   const handlePostClick = async () => {
     const newFeedback = {
-      accountId: userData.UserID,
+      accountId: userData.accountId,
       content,
       storeId: shopId,
     };

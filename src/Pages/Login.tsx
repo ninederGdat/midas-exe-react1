@@ -41,11 +41,27 @@ function Login() {
     });
     if (response.data) {
       const token = response.data.data;
-
-      const { unique_name, role, email, UserID }: loginModel =
-        jwt_decode(token);
+      const {
+        fullname,
+        role,
+        email,
+        accountId,
+        location,
+        phoneNumber,
+        status,
+      }: loginModel = jwt_decode(token);
       localStorage.setItem("token", token);
-      dispatch(setLoggedInUser({ unique_name, role, email, UserID }));
+      dispatch(
+        setLoggedInUser({
+          fullname,
+          role,
+          email,
+          accountId,
+          location,
+          phoneNumber,
+          status,
+        })
+      );
 
       navigate("/");
     } else if (response.error) {
@@ -64,11 +80,11 @@ function Login() {
     }
   };
 
-  useEffect(() => {
-    if (user != null) {
-      navigate("/");
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user != null) {
+  //     navigate("/");
+  //   }
+  // }, [user]);
 
   return (
     <div className="container text-center">
@@ -112,12 +128,12 @@ function Login() {
           </div>
         </div>
       </form>
-      <div className="col-sm-6 offset-sm-3 col-xs-12 mt-4">
+      {/* <div className="col-sm-6 offset-sm-3 col-xs-12 mt-4">
         <GoogleButton
           style={{ marginLeft: "auto", marginRight: "auto" }}
           onClick={handleGoogleSignIn}
         />
-      </div>
+      </div> */}
     </div>
   );
 }

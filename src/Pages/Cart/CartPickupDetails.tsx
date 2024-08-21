@@ -20,7 +20,7 @@ function CartPickupDetails() {
   let totalItems = 0;
 
   const initialUserData = {
-    name: userData.unique_name,
+    name: userData.fullname,
     phoneNumber: userData.phoneNumber,
     location: userData.location,
     email: userData.email,
@@ -44,7 +44,7 @@ function CartPickupDetails() {
 
   useEffect(() => {
     setUserInput({
-      name: userData.unique_name,
+      name: userData.fullname,
       location: userData.location,
       phoneNumber: userData.phoneNumber,
       email: userData.email,
@@ -55,7 +55,7 @@ function CartPickupDetails() {
     e.preventDefault();
     setLoading(true);
 
-    const { data }: any = await initatePayment(userData.UserID);
+    const { data }: any = await initatePayment(userData.accountId);
 
     console.log(data);
     const paymentLinkId = data?.paymentLinkId;

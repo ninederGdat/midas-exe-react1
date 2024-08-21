@@ -21,8 +21,8 @@ const paymentApi = createApi({
       }),
     }),
     getPaymentInfo: builder.query({
-      query: ({ paymentLinkId, userid }) => ({
-        url: `Payment/getinforpayment?paymentLinkId=${paymentLinkId}&userid=${userid}`,
+      query: ({ paymentLinkId, accountId }) => ({
+        url: `Payment/getinforpayment?paymentLinkId=${paymentLinkId}&accountId=${accountId}`,
       }),
       providesTags: ["Payment"],
     }),

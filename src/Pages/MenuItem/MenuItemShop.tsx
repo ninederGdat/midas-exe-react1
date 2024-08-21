@@ -8,11 +8,12 @@ import { MainLoader } from "../../Components/Page/Common";
 import { menuItemModel, menuItemShopModel, userModel } from "../../Interfaces";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useGetStoreByUserIdQuery } from "../../Apis/storeApi";
-import { useSelector } from "react-redux";
+import { useGetStoreByaccountIdQuery } from "../../Apis/storeApi";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Storage/Redux/store";
 import Modal from "react-modal";
 import { useUpdateStatusUserMutation } from "../../Apis/usersApi";
+import { updateUserStatus } from "../../Storage/Redux/userAuthSlice";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -21,11 +22,13 @@ function MenuItemShop() {
     (state: RootState) => state.userAuthStore
   );
 
+  const dispatch = useDispatch(); // Khởi tạo dispatch
+
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteMenuItem] = useDeleteMenuItemMutation();
-  const { data, isLoading } = useGetStoreByUserIdQuery(userData.UserID);
+  const { data, isLoading } = useGetStoreByaccountIdQuery(userData.accountId);
   const navigate = useNavigate();
-  const [updateStatusUser] = useUpdateStatusUserMutation(); // Hook for updateStatusUser API
+  const [updateStatusUser] = useUpdateStatusUserMutation();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAgreed, setIsAgreed] = useState(false);
@@ -47,9 +50,7 @@ function MenuItemShop() {
         success: "Menu Item Deleted successfully 👌",
         error: "Error Encountered 🤯",
       },
-      {
-        theme: "light",
-      }
+      { theme: "light" }
     );
   };
 
@@ -90,10 +91,13 @@ function MenuItemShop() {
     if (isAgreed) {
       try {
         await updateStatusUser({
-          id: userData.UserID,
-          data: { status: "Active" }, // Update status to Active
+          id: userData.accountId,
+          data: { status: "Active" },
         });
-        closeModal(); // Close modal on success
+
+        // Update user status in Redux store
+        dispatch(updateUserStatus("Active"));
+        closeModal();
       } catch (error) {
         console.error("Error updating user status:", error);
       }
@@ -107,22 +111,12 @@ function MenuItemShop() {
         <div className="table p-5">
           <div className="d-flex align-items-center justify-content-between">
             <h1 className="text-success">MenuItem List</h1>
-
-            {data?.data.length > 0 ? (
-              userData.status === "Active" && (
-                <button
-                  className="btn btn-success"
-                  onClick={() => navigate("/menuitem/menuitemupsert/")}
-                >
-                  Add New Menu Item
-                </button>
-              )
-            ) : (
+            {data?.data.length > 0 && userData.status === "Active" && (
               <button
-                className="btn btn-primary"
-                onClick={() => navigate("/menuItem/registStore")}
+                className="btn btn-success"
+                onClick={() => navigate("/menuitem/menuitemupsert/")}
               >
-                Create Store
+                Add New Menu Item
               </button>
             )}
           </div>
@@ -130,13 +124,21 @@ function MenuItemShop() {
             <h1>{data?.data[0]?.storeName}</h1>
             <h2 className="mt-2 ms-3">Store ID: {data?.data[0]?.storeId}</h2>
           </div>
-
           <div className="p-2">
-            {userData.status === "Inactive" && data?.data.length === 0 && (
+            {userData.status === "Inactive" && (
               <button className="btn btn-primary mb-3" onClick={openModal}>
                 Đăng ký bán hàng
               </button>
             )}
+            {userData.status === "Active" &&
+              (!data || data.data.length === 0) && (
+                <button
+                  className="btn btn-primary"
+                  onClick={() => navigate("/menuItem/registStore")}
+                >
+                  Create Store
+                </button>
+              )}
             <div className="row border">
               <div className="col-2">Image</div>
               <div className="col-1">ID</div>
@@ -144,46 +146,43 @@ function MenuItemShop() {
               <div className="col-2">Category</div>
               <div className="col-1">Price</div>
               <div className="col-1">Status</div>
-              <div className="col-1">Action</div>
+              <div className="col-2">Action</div>
             </div>
-
             {currentData.length > 0 ? (
-              currentData.map((menuItem: menuItemModel) => {
-                return (
-                  <div className="row border" key={menuItem.productId}>
-                    <div className="col-2">
-                      <img
-                        src={menuItem.imageLinks}
-                        alt="no content"
-                        style={{ width: "100%", maxWidth: "120px" }}
-                      />
-                    </div>
-                    <div className="col-1">{menuItem.productId}</div>
-                    <div className="col-2">{menuItem.productName}</div>
-                    <div className="col-2">{menuItem.categoryName}</div>
-                    <div className="col-1">{menuItem.price}</div>
-                    <div className="col-1">{menuItem.status}</div>
-                    <div className="col-1">
-                      <button className="btn btn-success">
-                        <i
-                          className="bi bi-pencil-fill"
-                          onClick={() =>
-                            navigate(
-                              "/menuitem/menuitemupsert/" + menuItem.productId
-                            )
-                          }
-                        ></i>
-                      </button>
-                      <button
-                        className="btn btn-danger mx-2"
-                        onClick={() => handleMenuItemDelete(menuItem.productId)}
-                      >
-                        <i className="bi bi-trash-fill"></i>
-                      </button>
-                    </div>
+              currentData.map((menuItem: menuItemModel) => (
+                <div className="row border" key={menuItem.productId}>
+                  <div className="col-2">
+                    <img
+                      src={menuItem.imageLinks}
+                      alt="no content"
+                      style={{ width: "100%", maxWidth: "120px" }}
+                    />
                   </div>
-                );
-              })
+                  <div className="col-1">{menuItem.productId}</div>
+                  <div className="col-2">{menuItem.productName}</div>
+                  <div className="col-2">{menuItem.categoryName}</div>
+                  <div className="col-1">{menuItem.price}</div>
+                  <div className="col-1">{menuItem.status}</div>
+                  <div className="col-2">
+                    <button className="btn btn-success">
+                      <i
+                        className="bi bi-pencil-fill"
+                        onClick={() =>
+                          navigate(
+                            "/menuitem/menuitemupsert/" + menuItem.productId
+                          )
+                        }
+                      ></i>
+                    </button>
+                    <button
+                      className="btn btn-danger mx-2"
+                      onClick={() => handleMenuItemDelete(menuItem.productId)}
+                    >
+                      <i className="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </div>
+              ))
             ) : (
               <div className="row border mt-3">
                 <div className="col-12 text-center text-danger">
@@ -194,7 +193,6 @@ function MenuItemShop() {
                 </div>
               </div>
             )}
-
             <div className="pagination mt-3">
               <button
                 className="btn btn-primary me-2"
@@ -229,7 +227,6 @@ function MenuItemShop() {
           </div>
         </div>
       )}
-
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
@@ -247,13 +244,13 @@ function MenuItemShop() {
           <label htmlFor="agree">Tôi đồng ý với điều khoản</label>
         </div>
         <button
-          className="btn btn-success"
+          className="btn btn-primary mt-2"
           onClick={handleAgree}
           disabled={!isAgreed}
         >
           Đồng ý
         </button>
-        <button className="btn btn-secondary" onClick={closeModal}>
+        <button className="btn btn-secondary mt-2" onClick={closeModal}>
           Đóng
         </button>
       </Modal>

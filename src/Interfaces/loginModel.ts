@@ -1,7 +1,10 @@
 export default interface loginModel {
-  unique_name?: string;
+  fullname?: string;
   role?: string;
   email?: string;
-  UserID: number;
+  accountId: number;
   error?: any;
+  location: string;
+  phoneNumber: string;
+  status: string;
 }

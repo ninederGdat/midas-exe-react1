@@ -20,5 +20,6 @@ export default interface orderHeaderModel {
     accountId: number;
     location: string;
   };
+  isRefund: boolean;
   orderDetails: orderDetailsModel[];
 }

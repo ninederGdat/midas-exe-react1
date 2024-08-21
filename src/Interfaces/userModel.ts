@@ -6,12 +6,12 @@
 // }
 
 export default interface userModel {
-  UserID?: number;
+  accountId?: number;
   username?: string;
   password?: string;
   location?: string;
   email?: string;
-  unique_name?: string;
+  fullname?: string;
   dateOfBirth?: string;
   gender?: string;
   phoneNumber?: string;

@@ -1,6 +1,7 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
 import { useGetPaymentInfoQuery } from "../../Apis/paymentApi"; // Đảm bảo import đúng
+import { MainLoader } from "../../Components/Page/Common";
 
 let confirmedImage = require("../../Assets/Images/success.jpg");
 
@@ -8,24 +9,32 @@ function OrderConfirmed() {
   const [searchParams] = useSearchParams();
 
   // Lấy paymentLinkId và accountId từ tham số URL
-  const paymentLinkId = searchParams.get("paymentLinkId");
-  const accountId = searchParams.get("accountId");
+  const paymentLinkId = searchParams.get("id");
+  const accountid = searchParams.get("accountId");
+
+  console.log(paymentLinkId);
+  console.log(accountid);
 
   // Chuyển accountId thành số nếu cần
-  const userId = accountId ? Number(accountId) : undefined;
+  const accountId = accountid ? Number(accountid) : undefined;
 
   // Gọi API để lấy thông tin thanh toán
-  const { data, error, isLoading } = useGetPaymentInfoQuery({
+  const { data, error, isLoading, refetch } = useGetPaymentInfoQuery({
     paymentLinkId: paymentLinkId!,
-    userid: userId!,
+    accountId: accountId!,
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <MainLoader />;
   }
 
   if (error) {
-    return <div>Error fetching payment info</div>;
+    return (
+      <div>
+        <div>Error fetching payment info</div>
+        <button onClick={refetch}>Try Again</button>
+      </div>
+    );
   }
 
   // Kiểm tra kiểu dữ liệu trả về từ API

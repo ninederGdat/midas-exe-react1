@@ -19,13 +19,9 @@ function Header() {
     (state: RootState) => state.shoppingCartStore.cartItems ?? []
   );
 
-  console.log(shoppingCartFromStore);
-
   const userData: userModel = useSelector(
     (state: RootState) => state.userAuthStore
   );
-
-  console.log(userData);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -72,7 +68,7 @@ function Header() {
                   Home
                 </NavLink>
               </li>
-              {userData.role === SD_Roles.ADMIN ? (
+              {userData && userData.role === SD_Roles.ADMIN ? (
                 <li className="nav-item dropdown">
                   <a
                     className="nav-link dropdown-toggle"
@@ -105,13 +101,7 @@ function Header() {
                     >
                       All Orders
                     </li>
-                    <li
-                      className="dropdown-item"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => navigate("order/manageOrders")}
-                    >
-                      Manage Orders
-                    </li>
+
                     <li
                       className="dropdown-item"
                       style={{ cursor: "pointer" }}
@@ -122,50 +112,35 @@ function Header() {
                   </ul>
                 </li>
               ) : (
+                userData?.accountId && (
+                  <li className="nav-item">
+                    <NavLink
+                      className="nav-link "
+                      aria-current="page"
+                      to="/order/myorders"
+                    >
+                      My Orders
+                    </NavLink>
+                  </li>
+                )
+              )}
+
+              {userData?.accountId && (
                 <li className="nav-item">
                   <NavLink
                     className="nav-link "
                     aria-current="page"
-                    to="/order/myorders"
+                    to="/shoppingCart"
                   >
-                    My Orders
+                    <i className="bi bi-cart"></i>
+                    {""}
+                    {userData?.accountId && `(${shoppingCartFromStore.length})`}
                   </NavLink>
                 </li>
               )}
 
-              {/* <li className="nav-item">
-                <NavLink
-                  className="nav-link "
-                  aria-current="page"
-                  to="/authentication"
-                >
-                  Authentication
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink
-                  className="nav-link "
-                  aria-current="page"
-                  to="/authorization"
-                >
-                  Authorization
-                </NavLink>
-              </li> */}
-
-              <li className="nav-item">
-                <NavLink
-                  className="nav-link "
-                  aria-current="page"
-                  to="/shoppingCart"
-                >
-                  <i className="bi bi-cart"></i>
-                  {""}
-                  {userData.UserID && `(${shoppingCartFromStore.length})`}
-                </NavLink>
-              </li>
-
               <div className="d-flex" style={{ marginLeft: "auto" }}>
-                {userData.UserID && (
+                {userData?.accountId && (
                   <>
                     <li className="nav-item dropdown">
                       <button
@@ -178,7 +153,7 @@ function Header() {
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                       >
-                        Welcome, {userData.unique_name}
+                        Welcome, {userData.fullname}
                       </button>
                       <ul className="dropdown-menu">
                         <li
@@ -213,7 +188,7 @@ function Header() {
                   </>
                 )}
 
-                {!userData.UserID && !user?.displayName && (
+                {!userData?.accountId && !user?.displayName && (
                   <>
                     {" "}
                     <li className="nav-item text-white">

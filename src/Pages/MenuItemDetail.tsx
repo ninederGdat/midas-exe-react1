@@ -9,7 +9,7 @@ import { toastNotify } from "../Helper";
 import { RootState } from "../Storage/Redux/store";
 import {
   useGetStoreByIdQuery,
-  useGetStoreByUserIdQuery,
+  useGetStoreByaccountIdQuery,
 } from "../Apis/storeApi";
 import Feedback from "../Components/Page/Feeback/Feedback";
 
@@ -42,7 +42,7 @@ function MenuItemDetail() {
   // console.log(menuItemData.store.storeID);
 
   const handleAddToCart = async (menuItemId: number) => {
-    if (!userData.UserID) {
+    if (!userData.accountId) {
       navigate("/login");
       return;
     }
@@ -52,7 +52,7 @@ function MenuItemDetail() {
     const response: cartResponse = await updateShoppingCart({
       productid: menuItemId,
       quantity: 1,
-      accountId: userData.UserID,
+      accountId: userData.accountId,
     });
     if (response.data && response.data.success) {
       toastNotify("Item added to cart successfully ");

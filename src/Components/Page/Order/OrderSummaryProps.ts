@@ -10,7 +10,7 @@ export interface OrderSummaryProps {
     id?: number;
     cartItems: ItemOrders[];
     amount?: number;
-    UserID?: string;
+    accountId?: string;
     stripePaymentIntentId?: string;
     status?: SD_Status;
     createDate: string;

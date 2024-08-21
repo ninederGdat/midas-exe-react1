@@ -14,12 +14,14 @@ const RegistStore = () => {
 
   const handleCreateStore = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(storeName, userData.accountId, location);
     try {
       await createStore({
-        storeName,
-        accountId: userData.UserID,
-        location,
-      }).unwrap();
+        storeName: storeName,
+        accountId: userData.accountId,
+        location: location,
+      });
+
       toast.success("Store created successfully!");
       navigate("/menuItem/menuItemShop");
     } catch (error) {

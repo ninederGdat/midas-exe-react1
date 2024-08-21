@@ -7,7 +7,6 @@ import {
   AuthenticationTestAdmin,
   Home,
   Login,
-  ManageOrders,
   MenuItemDetail,
   MenuItemList,
   MenuItemShop,
@@ -35,7 +34,7 @@ import { setLoggedInUser } from "../Storage/Redux/userAuthSlice";
 import { RootState } from "../Storage/Redux/store";
 import { AuthContextProvider } from "../Context/AuthContext";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useGetStoreByUserIdQuery } from "../Apis/storeApi";
+import { useGetStoreByaccountIdQuery } from "../Apis/storeApi";
 
 function App() {
   const dispatch = useDispatch();
@@ -43,7 +42,7 @@ function App() {
   const userData: userModel = useSelector(
     (state: RootState) => state.userAuthStore
   );
-  const { data, isLoading } = useGetShoppingCartQuery(userData.UserID, {
+  const { data, isLoading } = useGetShoppingCartQuery(userData.accountId, {
     skip: skip,
   });
 
@@ -51,8 +50,8 @@ function App() {
     const localToken = localStorage.getItem("token");
     if (localToken) {
       const {
-        unique_name,
-        UserID,
+        fullname,
+        accountId,
         email,
         role,
         location,
@@ -61,8 +60,8 @@ function App() {
       }: userModel = jwt_decode(localToken);
       dispatch(
         setLoggedInUser({
-          unique_name,
-          UserID,
+          fullname,
+          accountId,
           email,
           role,
           location,
@@ -80,7 +79,7 @@ function App() {
   }, [data]);
 
   useEffect(() => {
-    if (userData.UserID) setSkip(false);
+    if (userData.accountId) setSkip(false);
   }, [userData]);
 
   return (
@@ -111,10 +110,7 @@ function App() {
 
             <Route path="/order/myOrders" element={<MyOrders />}></Route>
             <Route path="/order/allOrders" element={<AllOrders />}></Route>
-            <Route
-              path="/order/manageOrders"
-              element={<ManageOrders />}
-            ></Route>
+
             {/* <Route path="/order/orderSum" element={<OrderSum />}></Route> */}
             <Route
               path="/order/orderDetails/:id"

@@ -8,8 +8,10 @@ import { orderDetailsModel, orderHeaderModel } from "../../Interfaces";
 import OrderList from "../../Components/Page/Order/OrderList";
 
 function MyOrders() {
-  const UserID = useSelector((state: RootState) => state.userAuthStore.UserID);
-  const { data, isLoading } = useGetAllOrdersByUserQuery(UserID);
+  const accountId = useSelector(
+    (state: RootState) => state.userAuthStore.accountId
+  );
+  const { data, isLoading } = useGetAllOrdersByUserQuery(accountId);
 
   console.log(data);
   console.log(isLoading);
@@ -17,7 +19,9 @@ function MyOrders() {
   return (
     <>
       {isLoading && <MainLoader />}
-      {!isLoading && <OrderList isLoading={isLoading} orderData={data} />}
+      {!isLoading && (
+        <OrderList isLoading={isLoading} orderData={data} isAdmin={false} />
+      )}
     </>
   );
 }

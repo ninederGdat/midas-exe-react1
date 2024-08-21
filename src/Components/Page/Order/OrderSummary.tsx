@@ -21,7 +21,7 @@ function OrderSummary({ data, paymentLinkId }: OrderSummaryProps) {
 
   const paymentData = useGetPaymentInfoQuery({
     paymentLinkId: data.paymentLinkId,
-    userid: userData.UserID,
+    accountId: userData.accountId,
   });
 
   console.log(paymentData);

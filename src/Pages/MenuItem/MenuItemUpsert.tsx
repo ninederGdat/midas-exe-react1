@@ -8,7 +8,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { MainLoader } from "../../Components/Page/Common";
 import { SD_Categories } from "../../Utility/SD";
-import { useGetStoreByUserIdQuery } from "../../Apis/storeApi";
+import { useGetStoreByaccountIdQuery } from "../../Apis/storeApi";
 import { userModel } from "../../Interfaces";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Storage/Redux/store";
@@ -51,7 +51,7 @@ function MenuItemUpsert() {
 
   const { data } = useGetMenuItemByIdQuery(id);
 
-  const shopData = useGetStoreByUserIdQuery(userData.UserID);
+  const shopData = useGetStoreByaccountIdQuery(userData.accountId);
 
   const [createMenuItem] = useCreateMenuItemMutation();
   const [updateMenuItem] = useUpdateMenuItemMutation();
@@ -147,7 +147,7 @@ function MenuItemUpsert() {
 
     if (response) {
       setLoading(false);
-      navigate("/menuItem/menuitemlist");
+      navigate("/menuItem/menuitemShop");
     } else {
       setLoading(false);
     }

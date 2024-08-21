@@ -25,8 +25,8 @@ function UserInfo() {
   const userData: userModel = useSelector(
     (state: RootState) => state.userAuthStore
   );
-  const UserId = userData.UserID;
-  const { data, isLoading } = useGetUsersByIdQuery(UserId);
+  const accountId = userData.accountId;
+  const { data, isLoading } = useGetUsersByIdQuery(accountId);
 
   const [show, setShow] = useState(false);
   const [updatedData, setUpdatedData] = useState<UserData>({
@@ -62,8 +62,8 @@ function UserInfo() {
   };
 
   const handleSubmit = async () => {
-    console.log(UserId);
-    const response = await updateUser({ data: updatedData, id: UserId }); // Call the updateUser mutation with updatedData
+    console.log(accountId);
+    const response = await updateUser({ data: updatedData, id: accountId }); // Call the updateUser mutation with updatedData
 
     console.log(updatedData);
     if (response) {

@@ -27,7 +27,7 @@ function MenuItemCart(props: Props) {
   );
 
   const handleAddToCart = async (menuItemId: number) => {
-    if (!userData.UserID) {
+    if (!userData.accountId) {
       navigate("/login");
       return;
     }
@@ -37,7 +37,7 @@ function MenuItemCart(props: Props) {
     const response: cartResponse = await updateShoppingCart({
       productid: menuItemId,
       quantity: 1,
-      accountId: userData.UserID,
+      accountId: userData.accountId,
     });
 
     if (response.data && response.data.success) {

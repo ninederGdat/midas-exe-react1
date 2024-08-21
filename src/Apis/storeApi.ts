@@ -18,7 +18,7 @@ const storeApi = createApi({
       }),
       providesTags: ["Store"],
     }),
-    getStoreByUserId: builder.query({
+    getStoreByaccountId: builder.query({
       query: (id) => ({
         url: `Store/GetByAccountId/${id}`,
       }),
@@ -51,7 +51,7 @@ const storeApi = createApi({
 
 export const {
   useGetAllStoresQuery,
-  useGetStoreByUserIdQuery,
+  useGetStoreByaccountIdQuery,
   useGetStoreByIdQuery,
   useCreateStoreMutation,
 } = storeApi;

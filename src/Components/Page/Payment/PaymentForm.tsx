@@ -6,11 +6,13 @@ import { cartItemModel, userModel } from "../../../Interfaces";
 import { useCreateOrderMutation } from "../../../Apis/orderApi";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../Storage/Redux/store";
-import { useGetStoreByUserIdQuery } from "../../../Apis/storeApi";
+import { useGetStoreByaccountIdQuery } from "../../../Apis/storeApi";
+import { useRemoveProductMutation } from "../../../Apis/shoppingCartApi";
 
 const PaymentForm: React.FC<OrderSummaryProps> = ({ data, paymentLinkId }) => {
   const navigate = useNavigate();
-  const [createOrder] = useCreateOrderMutation(); // Destructuring the mutation function
+  const [createOrder] = useCreateOrderMutation();
+  const [removeProduct] = useRemoveProductMutation(); // Destructure the removeProduct mutation
   const [isProcessing, setIsProcessing] = useState(false);
 
   const userData: userModel = useSelector(
@@ -20,39 +22,42 @@ const PaymentForm: React.FC<OrderSummaryProps> = ({ data, paymentLinkId }) => {
     (state: RootState) => state.shoppingCartStore.cartItems ?? []
   );
 
-  const shopData = useGetStoreByUserIdQuery(userData.UserID);
+  const shopData = useGetStoreByaccountIdQuery(userData.accountId);
 
-  const accountId = userData.UserID;
+  const accountId = userData.accountId;
+  const cartId = shoppingCartFromStore[0]?.cartId; // Assuming all items have the same cartId
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsProcessing(true);
 
-    // Prepare order details from shopping cart items
     const orderDetails = shoppingCartFromStore.map((item) => ({
       productId: item.productId,
       quantity: 1, // You need to determine how quantity is managed
     }));
 
-    // Construct the ReturnUrl with paymentLinkId and accountId
-    const returnUrl = `http://localhost:3000/order/orderconfirmed/?paymentLinkId=${paymentLinkId}&accountId=${accountId}`;
+    const returnUrl = `https://midas-exe.store/order/orderconfirmed/?paymentLinkId=${paymentLinkId}&accountId=${accountId}`;
 
-    // Call API to create order
     const orderData = {
       paymentMethodID: 1, // Replace with actual payment method ID
       shipmentMethodID: 2, // Replace with actual shipment method ID or null
       orderDetails: orderDetails,
       accountID: accountId,
       storeId: shopData.data.data[0].storeId,
-      paymentLinkId: paymentLinkId, // Include paymentLinkId in the order data
-      returnUrl: returnUrl, // Include the constructed ReturnUrl
+      paymentLinkId: paymentLinkId,
+      returnUrl: returnUrl,
     };
 
     try {
       const response: any = await createOrder(orderData);
+      console.log(response);
+
+      // Remove the cart using cartId
+      if (cartId) {
+        await removeProduct(cartId);
+      }
 
       if (data.checkoutUrl) {
-        // Redirect to the checkout URL
         window.location.href = data.checkoutUrl;
       } else {
         throw new Error("Checkout URL not found");

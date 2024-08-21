@@ -14,7 +14,6 @@ import OrderDetails from "./Order/OrderDetails";
 import AllOrders from "./Order/AllOrders";
 import MenuItemList from "./MenuItem/MenuItemList";
 import MenuItemUpsert from "./MenuItem/MenuItemUpsert";
-import ManageOrders from "./Order/ManageOrders";
 import UserList from "./User/UserList";
 import UserInfo from "./User/UserInfo";
 import MenuItemShop from "./MenuItem/MenuItemShop";
@@ -37,7 +36,6 @@ export {
   AllOrders,
   MenuItemList,
   MenuItemUpsert,
-  ManageOrders,
   UserList,
   UserInfo,
   MenuItemShop,

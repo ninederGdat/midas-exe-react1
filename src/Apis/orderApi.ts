@@ -39,10 +39,10 @@ const orderApi = createApi({
       providesTags: ["Order"],
     }),
     getAllOrdersByUser: builder.query({
-      query: (UserID) => ({
-        url: "order/by-account/" + UserID,
+      query: (accountId) => ({
+        url: "order/by-account/" + accountId,
         params: {
-          UserID: UserID,
+          accountId: accountId,
         },
       }),
       providesTags: ["Order"],
